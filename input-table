@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Table</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .input-cell {
+            background-color: #d4f8d4; /* Light green for user input cells */
+        }
+        button {
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Input Table</h2>
+<table id="inputTable">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Current</th>
+            <th>BREI</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Rows will be dynamically populated -->
+    </tbody>
+</table>
+
+<button onclick="captureData()">Capture Data</button>
+
+<h2>Captured Data</h2>
+<table id="outputTable">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Input Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Captured data will appear here -->
+    </tbody>
+</table>
+
+<script>
+    // Data from your Excel file
+    const tableData = [
+        { category: "Estimated closings for next 12 months", current: 3.0, brei: 3.0 },
+        { category: "Final Sales Price", current: 600000.0, brei: 600000.0 },
+        { category: "Commission per side", current: 0.025, brei: 0.025 },
+        { category: "Gross Commission", current: 15000.0, brei: 15000.0 },
+        { category: "Corporate Franchise Fee", current: 0.02, brei: 0.0 },
+        { category: "Your Commission Split", current: 0.8, brei: 0.95 },
+        { category: "Broker's Fees", current: 0.2, brei: 0.05 },
+        { category: "Errors & Ommissions Insurance annual premium**", current: 2500.0, brei: 199.0 },
+        { category: "E&O deductible***", current: 10000.0, brei: 0.0 },
+        { category: "Your net commission", current: 10926.67, brei: 14051.0 },
+        { category: "Net commissions for 12 months", current: 32780.0, brei: 42153.0 }
+    ];
+
+    // Populate the input table
+    const inputTable = document.getElementById('inputTable').querySelector('tbody');
+    tableData.forEach((row, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${row.category}</td>
+            <td class="input-cell">
+                <input type="number" id="input-${index}" value="${row.current}">
+            </td>
+            <td>${row.brei}</td>
+        `;
+        inputTable.appendChild(tr);
+    });
+
+    // Capture data into the output table
+    function captureData() {
+        const outputTable = document.getElementById('outputTable').querySelector('tbody');
+        outputTable.innerHTML = ''; // Clear existing rows
+
+        tableData.forEach((row, index) => {
+            const inputVal = document.getElementById(`input-${index}`).value;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row.category}</td>
+                <td>${inputVal}</td>
+            `;
+            outputTable.appendChild(tr);
+        });
+    }
+</script>
+
+</body>
+</html>
